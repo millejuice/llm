@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<!--
+	Aerial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			/* CSS를 사용하여 폼 요소의 글자색을 검정색으로 변경 */
+			#message {
+				color: black;
+				width: 30%;
+			}
+	
+			button {
+            color: black;
+            background-color: aliceblue;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 30rem; /* id="header"에서 30rem 떨어지도록 설정 */
+        	}
+		</style>
+		<title>🔥경기도 관광 서비스 봉봉이🔥</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/assets/css/main.css?v=1.0" />
+		<link rel="icon" type="image/png" href="/assets/css/images/BongBong2.png" />
+
+
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		
+		<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* 헤더의 h1 요소에 margin을 이용하여 위치 조정 */
+        #header h1 {
+            margin-top: -0px;    /* 위로 이동 */
+            margin-right: 400px;   /* 오른쪽으로 이동 */
+            margin-bottom: 100px;  /* 아래로 이동 */
+            margin-left: 20px;    /* 왼쪽으로 이동 */
+        }
+		#header h2,h3{
+			margin-left: 20px;  
+		}
+    </style>
+
+</head>
+
+			<html lang="ko">
+				<head>
+					<meta charset="UTF-8">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<title>경기도를 만나다</title>
+					<style>
+		
+						
+						h1 {
+							font-size: 3em; /* 큰 글씨 */
+							top: 50%;
+							left: 20%;
+							
+						}
+						h2 {
+							font-size: 1em; /* 중간 큰 글씨 */
+							top: 30%;
+							left: 20%;
+						}
+						h3 {
+							font-size: 1em; /* 중간 글씨 */
+							top: 30%;
+							left: 20%;
+						}
+						.large-text {
+							font-size: inherit;
+						}
+						.medium-text {
+							font-size: inherit;
+						}
+						.small-text {
+							font-size: inherit;
+						}
+				
+        
+						#header {
+							text-align: left;
+						}
+						.large-text {
+							font-size: 0.4em; /* Smallest text size */
+						}
+						.medium-text, .small-text {
+							font-size: 1.5m; /* Same size for medium and small text */
+							font-weight: bold;
+						}
+						form {
+							margin-top: 10px;
+						}
+					</style>	
+						
+	
+
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+		<h1><span class="large-text">경기도를 만나다</span><br>
+			<span class="medium-text">Gyeonggi-do</span><br>
+			<span class="small-text">Come to the Real KOREA</span>
+		</h1>
+
+		<h2>
+			<span class="small-text">역사와 문화가 숨쉬는 아름다운 도시 경기도, 경기도에 여행정보를 확인하세요.</span>
+		
+		</h2>
+        
+		<h3>
+			<span class="small-text">경기도에 가고싶은 여행지를 추천받아보세요.</span>
+
+		</h3>
+    </header>
+</body>
+
+<style> 
+.btn {
+	box-sizing: border-box;
+	appearance: none;
+	background-color: transparent;
+	border: 2px solid white;
+	border-radius: 0.6em;
+	color: white; 
+	cursor: pointer;
+	display: flex;
+	align-self: center;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1;
+	margin: 20px 10px; /* 위아래 간격 조정 */
+	padding: 1em 1.5em;
+	text-decoration: none;
+	text-align: center;
+	text-transform: uppercase;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+.btn:hover,
+.btn:focus {
+	color: rgb(0, 5, 20);
+	outline: 0;
+}
+
+.first:hover {
+	box-shadow: 0 0 40px 40px rgb(255, 255, 255) inset;
+}
+</style>
+
+
+</html>
+
+				<!-- 추가된 버튼 -->
+				<button  class="btn first" onclick="navigateToQuestion()">여행 계획 세우러 가기</button>
+			
+				</header>
+
+			
+
+				<!-- Footer -->
+				<footer id="footer">
+					<span class="copyright">©copyright 한걸음</span>
+				</footer>
+
+			</div>
+		</div>
+		<script>
+			window.onload = function() { document.body.classList.remove('is-preload'); }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; }
+		</script>
+		<script>
+			async function sendMessage() {
+				const url = "http://172.207.35.30:8004/stream_chat";
+				const message = document.getElementById("message").value;
+				const data = { content: message };
+				
+				try {
+					const response = await fetch(url, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(data)
+					});
+
+					if (!response.ok) {
+						throw new Error('Network response was not ok ' + response.statusText);
+					}
+
+					const reader = response.body.getReader();
+					const decoder = new TextDecoder('utf-8');
+
+					// Clear previous response
+					document.getElementById("response").innerText = "";
+
+					while (true) {
+						const { done, value } = await reader.read();
+						if (done) break;
+
+						const decodedChunk = decoder.decode(value, { stream: true });
+						document.getElementById("response").innerText += decodedChunk;
+					}
+				} catch (error) {
+					document.getElementById("response").innerText = 'Error: ' + error.message;
+				}
+			}
+
+			function navigateToQuestion() {
+				window.location.href = 'question.html';
+			}
+		</script>
+	</body>
+</html>

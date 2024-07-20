@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <style>
+        /* CSS를 사용하여 폼 요소의 글자색을 검정색으로 변경 */
+        #message {
+            color: black;
+            width: 300px;
+            border: 2px solid #f9f9f9; /* 테두리 색상 설정 */
+            padding: 10px; /* 내부 여백 설정 */
+            border-radius: 5px; /* 모서리를 둥글게 설정 */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
+            font-size: 1rem; /* 글자 크기 설정 */
+            background-color: #f9f9f9; /* 배경색 설정 */
+            transition: border-color 300ms ease-in-out, box-shadow 300ms ease-in-out; /* 테두리 색상 및 그림자 전환 효과 */
+            margin: 20px 10px; /* 위아래 간격 조정 */
+        }
+
+        #message:focus {
+            border-color: rgb(0, 6, 12); /* 포커스 시 테두리 색상 변경 */
+            box-shadow: 0 0 8px rgba(67, 67, 68, 0.6); /* 포커스 시 그림자 변경 */
+            outline: none; /* 기본 포커스 테두리 제거 */
+        }
+
+        .btn {
+            box-sizing: border-box;
+            appearance: none;
+            background-color: transparent;
+            border: 2px solid white;
+            border-radius: 0.6em;
+            color: white; 
+            cursor: pointer;
+            display: flex;
+            align-self: center;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1;
+            margin: 20px auto; /* 위아래 여백을 유지하면서 가로 중앙 정렬 */
+            padding: 1em 1.5em;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+        }
+
+        .btn:hover,
+        .btn:focus {
+            color: black;
+            outline: 0;
+        }
+
+        .first:hover {
+            box-shadow: 0 0 40px 40px white inset; /* $red 대신 밝은 그레이 색상으로 변경 */
+        }
+
+        .bold-label {
+            font-weight: bold;
+            font-size: 30px; /* 원하는 글자 크기로 변경 */
+            margin: 0px 10px; /* 레이블과 입력창 사이 간격 설정 */
+        }
+
+        form {
+            display: flex;
+            align-items: center; /* 수직 정렬 */
+            justify-content: center; /* 수평 정렬 */
+            flex-wrap: wrap; /* 작은 화면에서 요소가 줄바꿈됨 */
+        }
+
+        .center-button {
+            display: flex;
+            justify-content: center; /* 중앙 정렬 */
+        }
+
+        h1 {
+            font-size: 30px !important; /* h1 글자 크기 설정 */
+            margin-bottom: 50px !important;/* 아래 여백 추가 */
+        }
+
+        select {
+            color: black !important; /* 옵션창 글자색 검정으로 설정 */
+            font-size: 1rem; /* 옵션창 글자 크기 설정 */
+            border: 2px solid #fefffd; /* 옵션창 테두리 설정 */
+            border-radius: 5px; /* 옵션창 모서리 둥글게 설정 */
+            background-color: #fefffd; /* 옵션창 배경색 설정 */
+            transition: border-color 300ms ease-in-out, box-shadow 300ms ease-in-out; /* 테두리 색상 및 그림자 전환 효과 */
+            text-align: center;
+            padding: 10px;
+            width: 300px;
+        }
+
+        select option {
+            color: black; /* 옵션 항목 글자색 검정으로 설정 */
+        }
+       
+    </style>
+    <title>😎Ask me a Question😎</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/assets/css/main.css?v=1.0" />
+    <link rel="icon" type="image/png" href="/assets/css/images/BongBong2.png" />
+
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+    <div id="wrapper">
+        <div id="bg"></div>
+        <div id="main">
+            <!-- Header -->
+            <header id="header">
+                <h1>여행 전문 가이드 봉봉이에게 무엇이든 물어보세요!</h1>
+                <select name="type" class="select" id="tourType">
+                    <option value="">원하는 관광유형이 있다면 선택해주세요 🔽</option>
+                    <option value="박물관">박물관🏛️</option>
+                    <option value="자연">자연🌿</option>
+                    <option value="액티비티">액티비티🎢</option>
+                    <option value="예술">예술🤡</option>
+                    <option value="숙박시설">숙박시설🏨</option>
+                </select>
+                <form id="questionForm" onsubmit="event.preventDefault(); sendMessage();">
+                    <input type="text" id="message" name="message" placeholder="지역을 입력해주세요" required>
+                </form>
+                <button type="submit" class="btn first" onclick="sendMessage();">여행 만들기✈️</button>
+            </header>
+            <!-- Footer -->
+				<footer id="footer">
+					<span class="copyright">©copyright 한걸음</span>
+				</footer>
+        </div>
+    </div>
+    <script>
+        window.onload = function() { document.body.classList.remove('is-preload'); }
+        window.ontouchmove = function() { return false; }
+        window.onorientationchange = function() { document.body.scrollTop = 0; }
+
+        async function sendMessage() {
+            const message = document.getElementById("message").value;
+            const type = document.getElementById("tourType").value;
+            navigateToAnswer(message, type);
+        }
+
+        function navigateToAnswer(message, type) {
+            const encodedMessage = encodeURIComponent(message);
+            const encodedType = encodeURIComponent(type);
+            window.location.href = `answer.html?message=${encodedMessage}&type=${encodedType}`;
+        }
+    </script>
+</body>
+</html>

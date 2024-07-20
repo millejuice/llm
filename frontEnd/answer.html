@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>🏖️여행계획🏖️</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="icon" type="image/png" href="/assets/css/images/BongBong2.png" />
+    <style>
+        /* 전체 페이지 스타일 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('/assets/css/images/Gyeonggi-do.jpg') no-repeat center center/cover;
+            z-index: -1; /* Ensure the background is behind other elements */
+        }
+
+        #main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            color: black; /* Adjust as needed */
+            background: rgba(0, 0, 0, 0.7);
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding-top: 20px;
+        }
+
+        .recommendation {
+            margin: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: medium;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .recommendation img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .recommendation a {
+            display: block;
+            margin-top: 10px;
+            color: blue;
+            text-decoration: underline;
+        }
+
+        /* Progress Indicator 스타일 */
+        #progress-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; /* Ensure it's above other elements */
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            text-align: center;
+            color: white;
+        }
+
+        #progress {
+            width: 50px;
+            height: 50px;
+            border: 5px solid transparent;
+            border-top: 5px solid red;
+            border-radius: 50%;
+            animation: spin 1s linear infinite, colorchange 3s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes colorchange {
+            0% { border-top-color: red; }
+            33% { border-top-color: blue; }
+            66% { border-top-color: yellow; }
+            100% { border-top-color: red; }
+        }
+
+        #loading-message {
+            text-align: center;
+            margin: 20px;
+            color: white;
+            font-size: 35px; /* Adjust as needed */
+            line-height: 30px; /* Set line-height to 30px */
+            height: auto; /* Ensure the height adjusts to fit the text */
+            white-space: pre-line; /* Preserve whitespace and handle newlines */
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="bg"></div>
+        <div id="main" id="response"></div>
+        <div id="progress-modal">
+            <img id="guide-image" src="/assets/css/images/BongBong2.png" alt="Guide Image">
+            <div id="loading-message">10년차 여행 전문 가이드 봉봉이가 여러분들 맞춤 여행지를 만들고 있습니다</div>
+            <div id="progress"></div>
+        </div>
+    </div>
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        async function fetchResult(message, type) {
+    const url = "http://172.207.35.30:8004/stream_chat";
+    const data = { content: message, type: type };
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const result = await response.json();
+        document.getElementById('progress-modal').style.display = 'none';
+        displayRecommendations(result.answer.text);
+    } catch (error) {
+        console.error('Error:', error.message);
+        document.getElementById('progress-modal').style.display = 'none';
+        document.getElementById('response').innerText = 'Error: ' + error.message;
+    }
+}
+
+
+        function displayRecommendations(text) {
+            const recommendations = text.split('\n\n').filter(item => item.trim() !== '');
+            const main = document.getElementById('main');
+            main.innerHTML = ''; // Clear any previous content
+
+            recommendations.forEach(rec => {
+                const recElement = document.createElement('div');
+                recElement.className = 'recommendation';
+
+                const imgElement = document.createElement('img');
+                imgElement.src = '/assets/css/images/BongBong2.png';
+                imgElement.alt = 'Guide Image';
+
+                const textElement = document.createElement('div');
+                textElement.innerText = rec;
+
+                const linkMatch = rec.match(/웹사이트: (https?:\/\/\S+)/);
+                if (linkMatch) {
+                    const linkElement = document.createElement('a');
+                    linkElement.href = linkMatch[1];
+                    linkElement.target = '_blank';
+                    linkElement.innerText = '웹사이트 바로가기';
+                    textElement.innerText = textElement.innerText.replace(linkMatch[0], '');
+                    recElement.appendChild(imgElement);
+                    recElement.appendChild(textElement);
+                    recElement.appendChild(linkElement);
+                } else {
+                    recElement.appendChild(imgElement);
+                    recElement.appendChild(textElement);
+                }
+
+                main.appendChild(recElement);
+            });
+        }
+
+        window.onload = function() {
+    document.getElementById('progress-modal').style.display = 'flex'; // Show the progress indicator modal
+    const message = decodeURIComponent(getQueryParam('message'));
+    const type = decodeURIComponent(getQueryParam('type'));
+    fetchResult(message, type);
+}
+    </script>
+</body>
+</html>
